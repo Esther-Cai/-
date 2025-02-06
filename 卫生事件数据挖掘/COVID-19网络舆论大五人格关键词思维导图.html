@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            margin: 0;
+            background-color: #f5f6fa;
+        }
+        #container {
+            height: 800px;
+            width: 100%;
+        }
+        .analysis-text {
+            margin: 40px auto;
+            padding: 20px 40px;
+            max-width: 1200px;
+            line-height: 1.5;
+            color: #2c3e50;
+            background-color: #f5f6fa;
+        }
+        .analysis-text p {
+            margin-bottom: 10px;
+            text-indent: 2em;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <!-- 图表容器 -->
+    <div id="container"></div>
+
+    <!-- 说明文字容器 -->
+    <div class="analysis-text">
+        <p>2020年 2月20日~20年8月20日新冠期间高热度发帖（网页链接https://weibo.com/1644114654/IuniCsXaZ）大五人格发帖占比树图图。</p>
+        <p>样本量共4386条，按比例取100条。绘制方法同图一。</p>
+    </div>
+
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+    <script type="text/javascript">
+        // 初始化 ECharts 实例
+        var myChart = echarts.init(document.getElementById('container'));
+
+        // 显示加载动画
+        myChart.showLoading();
+
+        // 生成每个大节点的子节点，并设置子节点颜色的函数
+        function generateChildren(names, nodeColor) {
+            var children = [];
+            names.forEach(name => {
+                children.push({
+                    name: name,
+                    itemStyle: {
+                        color: nodeColor
+                    }
+                });
+            });
+            return children;
+        }
+
+        // 自定义树状图数据结构
+        var data = {
+            name: 'COVID2019',
+            children: [
+                {
+                    name: '尽责性',
+                    itemStyle: {
+                        color: '#D8B7DD'
+                    },
+                    children: generateChildren([
+                        "戴口罩出门",
+                        "一定要做好防护措施",
+                        "出门记得戴口罩",
+                        "大家都要注意点吧！！",
+                        "千万別有事没事往人多的地方跑",
+                        "出门务必带口罩，勤洗手"
+                    ], '#D8B7DD')
+                },
+                {
+                    name: '开放性',
+                    itemStyle: {
+                        color: '#FFF5B7'
+                    },
+                    children: generateChildren([
+                        "假期多看些有益书。",
+                        "这真的很迅速了！",
+                        "疫苗出来就有救了？",
+                        "疫苗和抗肺炎不同吧。",
+                        "希望能维持热度。",
+                        "电子烟肺炎就是新冠。",
+                        "武汉是受害城市。",
+                        "进口商品就那么好吗？",
+                        "军运会美国金牌都没。",
+                        "重大新闻和世界命运息息相关。",
+                        "武汉疫情调查被刷到后面。",
+                        "谈判破裂，开始舆论攻势。",
+                        "美国病毒来源的怀疑。",
+                        "电子烟肺炎很有影像资料。",
+                        "这些生物实验室太多了。",
+                        "这锅我不背！",
+                        "微博热搜也没抓住。",
+                        "疫情三年，日子多艰难。",
+                        "我不信美国病毒来源。",
+                        "美国不重视是因为幕后黑手。"
+                    ], '#FFF5B7')
+                },
+                {
+                    name: '宜人性',
+                    itemStyle: {
+                        color: '#D4F1C7'
+                    },
+                    children: generateChildren([
+                        "恭喜！好消息！",
+                        "山东加油 [good]",
+                        "真好",
+                        "恭喜",
+                        "我大山东 [心]",
+                        "为山东点赞 [心]",
+                        "明天都是好消息。",
+                        "大山东，优秀 [good]",
+                        "武汉加油！",
+                        "恭喜我大山东！",
+                        "好消息 [good]",
+                        "好消息好多啊",
+                        "好消息！！！",
+                        "山东加油，中国 [心]",
+                        "终于听到好消息",
+                        "加油 ",
+                        "太好了太好了",
+                        "越来越好！",
+                        "大山东，优秀",
+                        "好消息！！！",
+                        "会越来越好！",
+                        "大山东加油！",
+                        "恭喜！恭喜！",
+                        "我大山东 [心]"
+                    ], '#D4F1C7')
+                },
+                {
+                    name: '神经质',
+                    itemStyle: {
+                        color: '#A7C7F6'
+                    },
+                    children: generateChildren([
+                        "武汉加油！",
+                        "中国加油！🇨🇳",
+                        "科研人员辛苦了！",
+                        "医护人员辛苦了！",
+                        "希望早日战胜病毒！",
+                        "平安过年！🙏",
+                        "求求大家戴口罩！",
+                        "不要掉以轻心！",
+                        "请关注老人！",
+                        "孩子也要注意！",
+                        "不要传谣信谣！",
+                        "希望疫情快结束！",
+                        "大家都要小心！",
+                        "出门戴口罩！",
+                        "少去人多地方！",
+                        "希望早日康复！",
+                        "保护好自己！",
+                        "希望钟老平安！",
+                        "希望武汉挺住！",
+                        "保护好医护人员！",
+                        "不要恐慌！",
+                        "相信科学！",
+                        "做好个人防护！",
+                        "不要传谣！",
+                        "希望一切安好！",
+                        "愿大家平安！",
+                        "希望早日控制！",
+                        "做好防护措施！",
+                        "希望疫情好转！",
+                        "希望大家注意！",
+                        "戴口罩！加强自我保护！",
+                        "希望大家都平平安安！"
+                    ], '#A7C7F6')
+                },
+                {
+                    name: '外向性',
+                    itemStyle: {
+                        color: '#F2A8A1'
+                    },
+                    children: generateChildren([
+                        "健康无小事，防控是大事。",
+                        "可以暂时封闭武汉吗？",
+                        "禁止武汉跨省跨市？",
+                        "建议封城，防止扩散。",
+                        "父母不重视，求多宣传。",
+                        "病毒主要是从武汉出来。",
+                        "当地人不重视，很担心。",
+                        "潜伏期多久，症状是什么？",
+                        "武汉城市就被封城了。",
+                        "武汉本地人不着急。",
+                        "一人传染16个医护人员？",
+                        "武汉火车站没戴口罩。",
+                        "无法以正常价格买口罩。",
+                        "最初太掉以轻心了！",
+                        "我身边人不重视这事。",
+                        "病毒携带者不一定发病。"
+                    ], '#F2A8A1')
+                }
+            ]
+        };
+
+        // 隐藏加载动画
+        myChart.hideLoading();
+
+        // 设置图表的配置项
+        myChart.setOption({
+            tooltip: {
+                trigger: 'item',
+                triggerOn: 'mousemove'
+            },
+            series: [
+                {
+                    type: 'tree',
+                    data: [data],
+                    top: '18%',
+                    bottom: '14%',
+                    layout: 'radial',
+                    symbol: 'emptyCircle',
+                    symbolSize: 7,
+                    initialTreeDepth: 3,
+                    animationDurationUpdate: 750,
+                    emphasis: {
+                        focus: 'descendant'
+                    },
+                    itemStyle: {
+                        borderColor: '#000',
+                        borderWidth: 1
+                    }
+                }
+            ]
+        });
+
+        // 监听窗口大小变化
+        window.addEventListener('resize', myChart.resize);
+    </script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            margin: 0;
+            background-color: #f5f6fa;
+        }
+        #container {
+            height: 800px;
+            width: 100%;
+        }
+        .analysis-text {
+            margin: 40px auto;
+            padding: 20px 40px;
+            max-width: 1200px;
+            line-height: 1.5;
+            color: #2c3e50;
+            background-color: #f5f6fa;
+        }
+        .analysis-text p {
+            margin-bottom: 10px;
+            text-indent: 2em;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <!-- 图表容器 -->
+    <div id="container"></div>
+
+    <!-- 说明文字容器 -->
+    <div class="analysis-text">
+        <p>2013年 3月31日~2014年3月31日百度贴吧"h7n9吧"大五人格发帖占比树图图。</p>
+        <p>样本量共3975条，绘制方法同图一。</p>
+    </div>
+
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+    <script type="text/javascript">
+        // 初始化 ECharts 实例
+        var myChart = echarts.init(document.getElementById('container'));
+
+        // 显示加载动画
+        myChart.showLoading();
+
+        // 生成每个大节点的子节点，并设置子节点颜色的函数
+        function generateChildren(names, nodeColor) {
+            var children = [];
+            names.forEach(name => {
+                children.push({
+                    name: name,
+                    itemStyle: {
+                        color: nodeColor
+                    }
+                });
+            });
+            return children;
+        }
+
+        // 自定义树状图数据结构
+        var data = {
+            name: 'H7N9',
+            children: [
+                {
+                    name: '尽责性',
+                    itemStyle: {
+                        color: '#D8B7DD'
+                    },
+                    children: generateChildren([
+                        "H7N9有办法防御吗",
+                        "报告H7N9袭击的城市",
+                        "钟南山揭秘H7N9",
+                        "保护环境",
+                        "燕子回来H7N9北扩",
+                        "H7N9多在人口稠密区",
+                        "散布虚假疫情被拘",
+                        "气候转暖H7N9北移",
+                        "病毒携带者概念？",
+                        "三十度会杀死病毒？",
+                        "北京检测出病毒携带者",
+                        "预防H7N9从身边做起",
+                        "易感冒不要吃猪肉",
+                        "怎么预防",
+                        "吃健康食品",
+                        "为什么不扑杀鸽子？",
+                        "为H7N9正名",
+                        "不传谣不造谣",
+                        "H7N9住院治疗费用",
+                        "内地确诊60人感染",
+                        "卫计委发布预防措施",
+                        "开封患者家距养鸡场",
+                        "H7N9潜伏期",
+                        "气候转暖感染北移",
+                        "抑制治疗H7N9药物"
+                    ], '#D8B7DD')
+                },
+                {
+                    name: '开放性',
+                    itemStyle: {
+                        color: '#FFF5B7'
+                    },
+                    children: generateChildren([
+                        "燕子回来H7N9北扩",
+                        "H7N9多在人口稠密区",
+                        "散布虚假疫情被拘",
+                        "气候转暖H7N9北移",
+                        "病毒携带者概念？",
+                        "三十度会杀死病毒？",
+                        "北京检测出病毒携带者",
+                        "预防H7N9从身边做起",
+                        "易感冒不要吃猪肉",
+                        "怎么预防",
+                        "吃健康食品",
+                        "为什么不扑杀鸽子？",
+                        "为H7N9正名",
+                        "不传谣不造谣",
+                        "H7N9住院治疗费用",
+                        "内地确诊60人感染",
+                        "卫计委发布预防措施",
+                        "开封患者家距养鸡场",
+                        "H7N9潜伏期",
+                        "气候转暖感染北移",
+                        "抑制治疗H7N9药物",
+                        "传染病的预防",
+                        "禽流感大家不要恐慌",
+                        "关于此次禽流感",
+                        "北京女童可以出院"
+                    ], '#FFF5B7')
+                },
+                {
+                    name: '宜人性',
+                    itemStyle: {
+                        color: '#D4F1C7'
+                    },
+                    children: generateChildren([
+                        "病毒携带者概念？",
+                        "三十度会杀死病毒？",
+                        "北京检测出病毒携带者",
+                        "预防H7N9从身边做起",
+                        "易感冒不要吃猪肉",
+                        "怎么预防",
+                        "吃健康食品",
+                        "为什么不扑杀鸽子？",
+                        "为H7N9正名",
+                        "不传谣不造谣",
+                        "H7N9住院治疗费用",
+                        "内地确诊60人感染",
+                        "卫计委发布预防措施",
+                        "开封患者家距养鸡场",
+                        "H7N9潜伏期",
+                        "气候转暖感染北移",
+                        "抑制治疗H7N9药物",
+                        "禽流感大家不要恐慌",
+                        "关于此次禽流感",
+                        "北京女童可以出院",
+                        "血常规看疑似病例",
+                        "上海已基本安全",
+                        "大蒜抗禽流感",
+                        "病毒感染人的途径",
+                        "H7N9主要症状是发烧",
+                        "江苏患者转危为安",
+                        "禽流感扩散至北京",
+                        "注意保暖",
+                        "帕拉米韦",
+                        "醋抗禽流感",
+                        "治疗H7N9的药",
+                        "平安帖...祝平安",
+                        "禽流感病毒怎么感染",
+                        "政府应该给补贴",
+                        "养殖户要有良心",
+                        "鸡蛋期货市场冷清",
+                        "大规模养殖问题",
+                        "苏州昆山市有人感染",
+                        "湖南通报1例回顾性病例",
+                        "治疗H7N9的药出来没？",
+                        "板蓝根对N7N9有用吗",
+                        "科普H7N9大家族"
+                    ], '#D4F1C7')
+                },
+                {
+                    name: '神经质',
+                    itemStyle: {
+                        color: '#A7C7F6'
+                    },
+                    children: generateChildren([
+                        "预防H7N9从身边做起",
+                        "易感冒不要吃猪肉",
+                        "怎么预防",
+                        "吃健康食品",
+                        "为什么不扑杀鸽子？",
+                        "为H7N9正名",
+                        "不传谣不造谣",
+                        "H7N9住院治疗费用",
+                        "内地确诊60人感染"
+                    ], '#A7C7F6')
+                },
+                {
+                    name: '外向性',
+                    itemStyle: {
+                        color: '#F2A8A1'
+                    },
+                    children: generateChildren([
+                        "为H7N9正名",
+                        "不传谣不造谣",
+                        "H7N9住院治疗费用",
+                        "内地确诊60人感染",
+                        "卫计委发布预防措施"
+                    ], '#F2A8A1')
+                }
+            ]
+        };
+
+        // 隐藏加载动画
+        myChart.hideLoading();
+
+        // 设置图表的配置项
+        myChart.setOption({
+            tooltip: {
+                trigger: 'item',
+                triggerOn: 'mousemove'
+            },
+            series: [
+                {
+                    type: 'tree',
+                    data: [data],
+                    top: '18%',
+                    bottom: '14%',
+                    layout: 'radial',
+                    symbol: 'emptyCircle',
+                    symbolSize: 7,
+                    initialTreeDepth: 3,
+                    animationDurationUpdate: 750,
+                    emphasis: {
+                        focus: 'descendant'
+                    },
+                    itemStyle: {
+                        borderColor: '#000',
+                        borderWidth: 1
+                    }
+                }
+            ]
+        });
+
+        // 监听窗口大小变化
+        window.addEventListener('resize', myChart.resize);
+    </script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<head>
+  <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+  <div id="container" style="height: 100%"></div>
+
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  <script type="text/javascript">
+    var dom = document.getElementById('container');
+    var myChart = echarts.init(dom, null, {
+      renderer: 'canvas',
+      useDirtyRect: false
+    });
+    var app = {};
+    
+    var option;
+
+    option = {
+      color: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'],
+      title: {
+        text: '',
+        textStyle: {
+          fontSize: 24
+        }
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#6a7985',
+            fontSize: 18
+          }
+        },
+        textStyle: {
+          fontSize: 18
+        }
+      },
+      legend: {
+        data: ['SARS', 'H1N1', 'H7N9', 'COVID-19'],
+        textStyle: {
+          fontSize: 20
+        },
+        itemWidth: 30,
+        itemHeight: 20
+      },
+      toolbox: {
+        feature: {
+          saveAsImage: {
+            title: '保存为图片',
+            iconStyle: {
+              borderWidth: 2
+            }
+          }
+        },
+        iconStyle: {
+          borderWidth: 2
+        }
+      },
+      grid: {
+        left: '5%',
+        right: '5%',
+        bottom: '10%',
+        top: '15%',
+        containLabel: true
+      },
+      xAxis: [
+        {
+          type: 'category',
+          boundaryGap: false,
+          data: ['1周', '2周', '3周', '4周', '5周', '6周', '7周', '8周', '9周', '10周',
+            '11周', '12周', '13周', '14周', '15周', '16周', '17周', '18周', '19周', '20周',
+            '21周', '22周', '23周', '24周'],
+          axisLabel: {
+            fontSize: 18,
+            interval: 0,
+            rotate: 45,
+            margin: 15
+          },
+          axisLine: {
+            lineStyle: {
+              width: 3
+            }
+          },
+          nameTextStyle: {
+            fontSize: 18
+          }
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value',
+          name: '发帖量占比 (%)',
+          nameTextStyle: {
+            fontSize: 18,
+            padding: [0, 0, 0, 50]
+          },
+          axisLabel: {
+            fontSize: 18,
+            margin: 15
+          },
+          axisLine: {
+            lineStyle: {
+              width: 3
+            }
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              type: 'dashed',
+              width: 2
+            }
+          }
+        }
+      ],
+      series: [
+        {
+          name: 'SARS',
+          type: 'line',
+          stack: 'Total',
+          smooth: true,
+          lineStyle: {
+            width: 0
+          },
+          showSymbol: false,
+          areaStyle: {
+            opacity: 0.8,
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: '#FF6B6B'
+              },
+              {
+                offset: 1,
+                color: 'rgba(255, 107, 107, 0.8)'
+              }
+            ])
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [
+            0.20, 0.00, 2.22, 0.40, 0.20, 0.20, 0.61, 0.20, 1.01, 3.84, 2.22, 
+            11.92, 34.14, 16.97, 9.29, 5.26, 5.05, 1.82, 1.01, 0.40, 1.01, 0.20, 0.00
+          ]
+        },
+        {
+          name: 'H1N1',
+          type: 'line',
+          stack: 'Total',
+          smooth: true,
+          lineStyle: {
+            width: 0
+          },
+          showSymbol: false,
+          areaStyle: {
+            opacity: 0.8,
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: '#4ECDC4'
+              },
+              {
+                offset: 1,
+                color: 'rgba(78, 205, 196, 0.8)'
+              }
+            ])
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [
+            51.14, 2.98, 7.11, 6.73, 2.42, 1.89, 1.23, 1.71, 1.28, 1.18, 0.80, 
+            0.66, 0.28, 0.28, 0.71, 0.66, 0.66, 
+            0.76, 0.95, 3.65, 6.96, 4.26, 2.37, 1.61
+          ]
+        },
+        {
+          name: 'H7N9',
+          type: 'line',
+          stack: 'Total',
+          smooth: true,
+          lineStyle: {
+            width: 0
+          },
+          showSymbol: false,
+          areaStyle: {
+            opacity: 0.8,
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: '#45B7D1'
+              },
+              {
+                offset: 1,
+                color: 'rgba(69, 183, 209, 0.8)'
+              }
+            ])
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [
+            27.53, 28.26, 15.37, 9.61, 5.41, 3.08, 1.80, 2.33, 0.76, 0.37, 0.50,
+            0.37, 0.13, 0.29, 0.08, 0.29, 
+            0.76, 0.21, 0.42, 0.08, 0.05, 0.18, 0.08, 0.03
+          ]
+        },
+        {
+          name: 'COVID-19',
+          type: 'line',
+          stack: 'Total',
+          smooth: true,
+          lineStyle: {
+            width: 0
+          },
+          showSymbol: false,
+          areaStyle: {
+            opacity: 0.8,
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: '#96CEB4'
+              },
+              {
+                offset: 1,
+                color: 'rgba(150, 206, 180, 0.8)'
+              }
+            ])
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [
+            59.67, 20.36, 3.98, 0.00, 0.00, 0.00,
+            0.00, 0.86, 0.86, 0.00, 5.13, 0.00, 0.00,
+            3.88, 1.11, 0.00, 0.00, 4.99, 0.00, 0.00,
+            0.00, 0.00, 0.00, 0.00
+          ]
+        }
+      ]
+    };
+
+    if (option && typeof option === 'object') {
+      myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+  </script>
+</body>
+</html>

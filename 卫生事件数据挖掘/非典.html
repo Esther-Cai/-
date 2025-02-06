@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big Five personality trends during SARS</title>
+  <!-- 引入 ECharts -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+  <style>
+    /* 设置图表容器的大小 */
+    #main {
+      width: 100%;
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+  <div id="main"></div>
+
+  <script>
+    // 更新后的五种人格特质数据
+    var rawData = [
+      ['Month', 'Conscientiousness', 'Openness', 'Neuroticism', 'Extraversion', 'Agreeableness'],
+      ['2003-01', 1, 0, 0, 0, 0],
+      ['2003-02', 2, 9, 2, 0, 0],
+      ['2003-03', 3, 10, 3, 1, 0],
+      ['2003-04', 68, 143, 56, 15, 2],
+      ['2003-05', 0, 82, 29, 2, 10],
+      ['2003-06', 0, 10, 3, 0, 0],
+      ['2003-07', 0, 0,1, 0, 1],
+      ['2003-08', 0, 1,1, 0, 0],
+      ['2003-09', 0, 2,1, 0, 0],
+      ['2003-10', 0, 3,0, 0, 0]  // 添加了2003年10月的数据
+    ];
+
+    // 获取 DOM 元素并初始化图表
+    var chartDom = document.getElementById('main');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    // 配置图表
+    option = {
+      title: {
+        text: 'Big Five personality trends during SARS', // 修改了这里
+        left: 'center',
+      },
+      tooltip: {
+        trigger: 'axis',
+      },
+      legend: {
+        data: ['Conscientiousness', 'Openness', 'Neuroticism', 'Extraversion', 'Agreeableness'],
+        top: '10%'
+      },
+      xAxis: {
+        type: 'category',
+        data: rawData.slice(1).map(item => item[0]),  // 取出所有日期
+        axisLabel: {
+          rotate: 45  // 旋转X轴标签，避免重叠
+        }
+      },
+      yAxis: {
+        type: 'value',
+        min: 0,
+        max: 150,  // 修改最大值为150
+        name: 'number',  // 修改了这里
+        axisLabel: {
+          formatter: '{value}'
+        },
+        interval: 20  // 修改刻度间隔为20
+        
+      },
+      series: [
+        {
+          name: 'Conscientiousness',
+          type: 'line',
+          data: rawData.slice(1).map(item => item[1]),
+          smooth: true,
+          lineStyle: { width: 2, color: '#ff5733' }, // 红色
+        },
+        {
+          name: 'Openness',
+          type: 'line',
+          data: rawData.slice(1).map(item => item[2]),
+          smooth: true,
+          lineStyle: { width: 2, color: '#33b5ff' }, // 蓝色
+        },
+        {
+          name: 'Neuroticism',
+          type: 'line',
+          data: rawData.slice(1).map(item => item[3]),
+          smooth: true,
+          lineStyle: { width: 2, color: '#ffcc00' }, // 黄色
+        },
+        {
+          name: 'Extraversion',
+          type: 'line',
+          data: rawData.slice(1).map(item => item[4]),
+          smooth: true,
+          lineStyle: { width: 2, color: '#66cc66' }, // 绿色
+        },
+        {
+          name: 'Agreeableness',
+          type: 'line',
+          data: rawData.slice(1).map(item => item[5]),
+          smooth: true,
+          lineStyle: { width: 2, color: '#9933cc' }, // 紫色
+        }
+      ]
+    };
+
+    // 使用配置项渲染图表
+    myChart.setOption(option);
+  </script>
+</body>
+</html>

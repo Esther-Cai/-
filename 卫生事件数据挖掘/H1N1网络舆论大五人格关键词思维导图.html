@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            margin: 0;
+            background-color: #f5f6fa;
+        }
+        #container {
+            height: 800px;
+            width: 100%;
+        }
+        .analysis-text {
+            margin: 40px auto;
+            padding: 20px 40px;
+            max-width: 1200px;
+            line-height: 1.5;
+            color: #2c3e50;
+            background-color: #f5f6fa;
+        }
+        .analysis-text p {
+            margin-bottom: 10px;
+            text-indent: 2em;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <!-- 图表容器 -->
+    <div id="container"></div>
+
+    <!-- 说明文字容器 -->
+    <div class="analysis-text">
+        <p>2009 年 4 月 26 日~2010 年 4 月 25 日百度贴吧"猪流感吧"大五人格发帖占比树图。</p>
+        <p>样本量共2995条，按比例取100条。绘制方法同图一。</p>
+    </div>
+
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+    <script type="text/javascript">
+        var dom = document.getElementById('container');
+        var myChart = echarts.init(dom, null, {
+            renderer: 'canvas',
+            useDirtyRect: false
+        });
+        var app = {};
+        
+        var option;
+
+        myChart.showLoading();
+
+    // 自定义树状图数据结构
+    var data = {
+        name: 'H1N1', // 修改了根节点名称
+        children: [
+            {
+                name: '尽责性', // 第一个大节点
+                itemStyle: {
+                    color: '#D8B7DD' // 淡紫色
+                },
+                children: generateChildren([
+                    "戴上口罩，预防为重",
+                    "不要当肥猪流",
+                    "第一要务是勤洗手",
+                    "预防猪流感第一要务",
+                    "严防猪流感入境",
+                    "中国要加强防控",
+                    "防治猪流感最好方法",
+                    "自我隔离，保护自己",
+                    "把去墨西哥的人隔离"
+                ], '#D8B7DD')
+            },
+            {
+                name: '开放性', // 第二个大节点
+                itemStyle: {
+                    color: '#FFF5B7' // 淡黄色
+                },
+                children: generateChildren([
+                    "吃大蒜预防猪流感",
+                    "一般怎么鉴别？",
+                    "张云龙的感想",
+                    "防治简易方法",
+                    "香港有NHN1流感",
+                    "全球最新数字",
+                    "区别甲型和普通",
+                    "京都血糖仪测值",
+                    "治疗猪流感建议",
+                    "H1N1流感误区",
+                    "全球最新数字",
+                    "非接触式测温仪",
+                    "广交会预防行动",
+                    "墨西哥死亡人数",
+                    "板蓝根预防猪流感",
+                    "包机接回公民",
+                    "预防必备物品",
+                    "世界卫生组织图",
+                    "台湾确诊两例",
+                    "全球最新数字",
+                    "四川确诊病例",
+                    "四川确诊病例",
+                    "谁是医生？",
+                    "反映骨痛热",
+                    "全球最新数字",
+                    "内地首例患者",
+                    "全球最新数字",
+                    "甲型H1N1诊疗方案",
+                    "甲型H1N1病死率",
+                    "全球最新数字",
+                    "济南疑似病例",
+                    "甲型H1N1症状",
+                    "济南也有了",
+                    "疫情持续多久？",
+                    "四川首例患者",
+                    "四川首例患者",
+                    "被隔离者的日志",
+                    "调查从加拿大回国",
+                    "病例从外国回来？",
+                    "最新消息",
+                    "山东疑似病例",
+                    "根源预防缓解",
+                    "疫情实时预测",
+                    "山东感染1例？",
+                    "确诊一人？",
+                    "准备回国",
+                    "北京现在状况",
+                    "预防H1N1宣传画",
+                    "猪流感传播？",
+                    "回天津安全吗？",
+                    "坐火车到青岛？",
+                    "提高免疫力？",
+                    "疫情会更多？",
+                    "求助医生",
+                    "猪流感疑问",
+                    "全球最新数字",
+                    "藿香正气制剂",
+                    "让联通发短信",
+                    "世卫组织调查",
+                    "塘沽隔离者",
+                    "世卫组织数字",
+                    "济南卫生部门",
+                    "济南卫生部门",
+                    "问确诊人数？",
+                    "山东疾控",
+                    "甲型H1N1防治",
+                    "人感染猪流感",
+                    "预防甲型H1N1",
+                    "山东确诊病例",
+                    "加拿大政府质疑",
+                    "加拿大政府质疑",
+                    "流感症状？",
+                    "出门需要戴口罩？",
+                    "对抗病毒换思路",
+                    "紧急通知",
+                    "猪流感传播？",
+                    "回国要隔离？",
+                    "留学生回国问题",
+                    "北京确诊一例",
+                    "教大家预防",
+                    "全球最新数字",
+                    "去加拿大安全？",
+                    "入境统一隔离？",
+                    "流行性病毒？",
+                    "上街戴口罩？",
+                    "密切接触者？",
+                    "密切接触者？",
+                    "隔离飞机乘客？",
+                    "全球确诊病例？",
+                    "全球最新数字",
+                    "感冒怎么办？",
+                    "同学从美国回来",
+                    "墨西哥最早发现",
+                    "美国回国隔离？",
+                    "关注甲型H1N1",
+                    "国外数据准确？",
+                    "国外数据准确？",
+                    "广东疑似病例",
+                    "广州也有了",
+                    "福建有H1N1吗？"
+                ], '#FFF5B7')
+            },
+            {
+                name: '宜人性', // 第三个大节点
+                itemStyle: {
+                    color: '#D4F1C7' // 浅绿色
+                },
+                children: generateChildren([
+                    "蒜片抑制猪流感",
+                    "预防猪流感口罩",
+                    "人类不是无能为力",
+                    "猪流感不可怕",
+                    "我国未发现疫情",
+                    "食用猪肉能否感染",
+                    "猪流感有哪些症状",
+                    "中成药预防猪流感",
+                    "预防治疗猪流感自救速查表",
+                    "饮食注意事项",
+                    "淡定",
+                    "预防猪流感",
+                    "吃大蒜预防猪流感",
+                    "一般怎么鉴别？",
+                    "张云龙的感想",
+                    "防治简易方法",
+                    "香港有NHN1流感",
+                    "全球最新数字",
+                    "区别甲型和普通",
+                    "京都血糖仪测值",
+                    "治疗猪流感建议",
+                    "H1N1流感误区",
+                    "全球最新数字",
+                    "非接触式测温仪",
+                    "广交会预防行动",
+                    "墨西哥死亡人数",
+                    "板蓝根预防猪流感"
+                ], '#D4F1C7')
+            },
+            {
+                name: '神经质', // 第四个大节点
+                itemStyle: {
+                    color: '#A7C7F6' // 浅蓝色
+                },
+                children: generateChildren([
+                    "疫情持续多久？",
+                    "四川首例患者"
+                ], '#A7C7F6')
+            },
+            {
+                name: '外向性', // 第五个大节点
+                itemStyle: {
+                    color: '#F2A8A1' // 淡红色
+                },
+                children: generateChildren([
+                    "全球最新数字",
+                    "全球最新数字",
+                    "全球最新数字"
+                ], '#F2A8A1')
+            }
+        ]
+    };
+
+    // 生成每个大节点的子节点，并设置子节点颜色
+    function generateChildren(names, nodeColor) {
+        var children = [];
+        names.forEach(name => {
+            children.push({
+                name: name,
+                itemStyle: {
+                    color: nodeColor // 设置小节点的颜色与大节点一致
+                }
+            });
+        });
+        return children;
+    }
+
+    myChart.hideLoading();
+
+    // 设置图表的配置项
+    myChart.setOption({
+        tooltip: {
+            trigger: 'item',
+            triggerOn: 'mousemove'
+        },
+        series: [
+            {
+                type: 'tree',
+                data: [data],
+                top: '18%',
+                bottom: '14%',
+                layout: 'radial', // 设置径向布局
+                symbol: 'emptyCircle',
+                symbolSize: 7,
+                initialTreeDepth: 3,
+                animationDurationUpdate: 750,
+                emphasis: {
+                    focus: 'descendant'
+                },
+                // 设置连线的颜色
+                itemStyle: {
+                    borderColor: '#000', // 连接线颜色
+                    borderWidth: 1
+                }
+            }
+        ]
+    });
+
+        if (option && typeof option === 'object') {
+          myChart.setOption(option);
+        }
+
+        window.addEventListener('resize', myChart.resize);
+    </script>
+</body>
+</html>

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网络舆情博弈分析平台</title>
+    <style>
+        :root {
+            --primary-color: #1e3c72;
+            --secondary-color: #2a5298;
+            --background-color: #f5f5f5;
+            --text-color: #333;
+            --card-background: #fff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-image: url('背景图2.png');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            height: 80px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 16px;
+            font-weight: 500;
+            padding: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* 主横幅 */
+        .banner {
+            margin-top: 80px;
+            height: 450px;
+            background: linear-gradient(135deg, 
+                rgba(30, 60, 114, 0.95) 0%, 
+                rgba(42, 82, 152, 0.95) 100%);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .banner-content h1 {
+            font-size: 3.2em;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .banner-content h2 {
+            font-size: 1.8em;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        /* 内容区域 */
+        .content {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background-color: rgba(255, 255, 255, 0.97);
+            border-radius: 10px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.99);
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+            margin-bottom: 40px;
+            padding: 30px;
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 600px;
+            margin: 20px 0;
+        }
+
+        .analysis-text {
+            margin: 20px 0;
+            font-size: 1.2em;
+            color: #666;
+            text-indent: 2em;
+        }
+
+        /* 页脚 */
+        .footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 50px 0;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        .footer-column h4 {
+            margin-bottom: 20px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 50px;
+            opacity: 0.8;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 4px;
+        }
+
+        /* 添加新的CSS样式 */
+        .disease-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .disease-item {
+            background: var(--card-background);
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .disease-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 标签页样式 */
+        .tab-container {
+            margin-bottom: 40px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            background: var(--card-background);
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background: var(--card-background);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .summary-item {
+            margin-bottom: 80px;
+        }
+        
+        .summary-image {
+            width: 100%;
+            max-width: 1000px;
+            height: auto;
+            display: block;
+            margin: 20px auto 40px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        
+        #summary {
+            background: var(--card-background);
+            padding: 40px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+        
+        #summary .analysis-text {
+            margin-top: 40px;
+            padding: 20px 40px;
+            background-color: var(--card-background);
+        }
+        
+        #summary h2 {
+            color: var(--primary-color);
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 2em;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <nav class="top-nav">
+        <div class="nav-links">
+            <a href="#intro">首页</a>
+            <a href="#weekly-trends">趋势分析</a>
+            <a href="#personality-intro">人格特征</a>
+            <a href="#disease-analysis">疫情分析</a>
+            <a href="#media-analysis">媒体分析</a>
+            <a href="#summary">研究结论</a>
+        </div>
+    </nav>
+
+    <!-- 横幅区域 -->
+    <div class="banner">
+        <div class="banner-content">
+            <h1>重大公共卫生突发事件下头部网络平台中的舆情博弈</h1>
+            <h2>——基于大五人格的分析</h2>
+        </div>
+    </div>
+
+    <!-- 内容区域 -->
+    <div class="content">
+        <!-- 介绍部分 -->
+        <section id="intro" class="section">
+            <div class="analysis-text">
+                <p>在这个信息爆炸的时代，每一次重大公共卫生突发事件不仅考验着我们的科学与医疗体系，更是在网络空间中激起了一波又一波的思想碰撞。从SARS到新冠，每一场疫情都像是一面镜子，映射出社会的不同侧面。那么，在这些关键时期里，是什么因素驱动了人们在网络上的讨论？又是什么样的人格特质使得某些声音更加响亮？</p>
+                <p>本项目将带您一同探索这一引人入胜的话题。我们选择了天涯论坛、百度贴吧以及新浪微博这三个具有代表性的社交媒体平台作为观察窗口，通过对SARS、H1N1、H7N9及新冠疫情四个重要时期的深入挖掘，尝试揭示网民态度随时间演变背后的秘密。更重要的是，我们将首次引入"大五人格"理论框架来分析个体差异如何影响其在线表达行为，从而为理解复杂多变的社会舆论提供新的视角。</p>
+            </div>
+        </section>
+
+        <!-- 24周发帖量趋势 -->
+        <section id="weekly-trends" class="section">
+            <h2>24周发帖量趋势对比</h2>
+            <div class="chart-container">
+                <iframe src="24周发帖量河流图成品.html"></iframe>
+            </div>
+            <div class="analysis-text">
+                <p>在对H1N1、H7N9和新冠等重大公共卫生事件的网络讨论进行分析时，发现这些事件在网络热度上的演变模式相似。初期，由于公众的好奇心和信息需求，网络探讨度迅速攀升至峰值；随后，随着官方信息的完善及新鲜感下降，讨论热度逐渐减弱。相比之下，SARS事件的网络探讨度表现出明显的滞后性。2003年，互联网发展尚处初级阶段，信息传播效率低下，导致SARS疫情初期网络关注度较低。直到约13周后，随着疫情严重性和社会影响的加剧，网络讨论才达到高峰。这表明，网络基础设施和技术的发展显著影响了公共事件在线讨论的动态。</p>
+            </div>
+        </section>
+
+        <!-- 大五人格维度及特征 -->
+        <section id="personality-intro" class="section">
+            <h2>大五人格维度及特征</h2>
+            <div class="analysis-text">
+                <p>人格特质理论是人格心理学一个重要的理论流派。大五人格模型又被称为"五因素模型"，是目前心理学界使用最多、影响最广的一种人格特质理论模型，它是基于词汇学假设创立而成。以下是大五人格的维度和特质：</p>
+            </div>
+            <div class="chart-container">
+                <iframe src="personality-intro.html"></iframe>
+            </div>
+        </section>
+
+        <div class="analysis-text">
+            <p>我们对SARS、H1N1、H7N9及新冠疫情四个重要时期的网络舆论文本进行了可视化处理。通过下方的交互式图表，您可以清晰地观察到不同时间点上，哪种大五人格特质在舆论中占据主导地位，及哪些声音逐渐减弱。点击每个月份的时间节点，即可查看当月各大五人格特质在网络舆论中的占比情况。</p>
+        </div>
+
+        <!-- 疫情分析部分 -->
+        <section id="disease-analysis" class="section">
+            <!-- SARS分析 -->
+            <h2>SARS分析</h2>
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <button class="tab-button active" onclick="switchTab(this, 'sars-trend')">大五人格数量趋势图</button>
+                    <button class="tab-button" onclick="switchTab(this, 'sars-mindmap')">网络舆论关键词思维导图</button>
+                </div>
+                <div id="sars-trend" class="tab-content active">
+                    <div class="chart-container">
+                        <iframe src="SARS大五人格趋势图.html"></iframe>
+                    </div>
+                </div>
+                <div id="sars-mindmap" class="tab-content">
+                    <div class="chart-container">
+                        <iframe src="SARS网络舆论大五人格关键词思维导图.html"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <!-- H7N9分析 -->
+            <h2>H7N9分析</h2>
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <button class="tab-button active" onclick="switchTab(this, 'h7n9-trend')">大五人格数量趋势图</button>
+                    <button class="tab-button" onclick="switchTab(this, 'h7n9-mindmap')">网络舆论关键词思维导图</button>
+                </div>
+                <div id="h7n9-trend" class="tab-content active">
+                    <div class="chart-container">
+                        <iframe src="H7N9大五人格趋势图.html"></iframe>
+                    </div>
+                </div>
+                <div id="h7n9-mindmap" class="tab-content">
+                    <div class="chart-container">
+                        <iframe src="H7N9网络舆论大五人格关键词思维导图.html"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COVID-19分析 -->
+            <h2>COVID-19分析</h2>
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <button class="tab-button active" onclick="switchTab(this, 'covid-trend')">大五人格数量趋势图</button>
+                    <button class="tab-button" onclick="switchTab(this, 'covid-mindmap')">网络舆论关键词思维导图</button>
+                </div>
+                <div id="covid-trend" class="tab-content active">
+                    <div class="chart-container">
+                        <iframe src="COVID-19大五人格趋势图.html"></iframe>
+                    </div>
+                </div>
+                <div id="covid-mindmap" class="tab-content">
+                    <div class="chart-container">
+                        <iframe src="COVID-19网络舆论大五人格关键词思维导图.html"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 媒体分析 -->
+        <section id="media-analysis" class="section">
+            <h2>媒体类型-大五人格特质分布</h2>
+            <div class="analysis-text">
+                <p>为了更直观地展示新冠疫情期间微博平台上各类媒体与其发布的内容所体现的大五人格特质之间的关系，我们精心制作了一个三层结构的桑基图。左侧部分展示了媒体类型的划分，包括主流媒体、商业媒体和自媒体三大类。中部区域列出了具体的各种媒体来源。而在最右侧，则是对应的大五人格类型分布。通过这种视觉化方式，我们可以一目了然地看出不同类型媒体在其报道主题上倾向于反映哪一种性格维度。</p>
+            </div>
+            <div class="chart-container">
+                <iframe src="媒体大五人格桑基图 - 副本.html"></iframe>
+            </div>
+            <div class="analysis-text">
+                <p>基于以上发现，我们可以得出结论：主流媒体（主要是官方媒体）凭借其在人格特质上所展现出���尽责性和开放性，在社会舆论和公众情绪方面起到了至关重的稳定作用。在信息传播的生态系统中，官方媒体如同定海神针，能够有效地引导社会情绪和舆论的走向。当商业媒体和自媒体因神经质特质引发社会情绪波动和舆论混乱时，官方媒体够通过自身的专业报道和客观分析，及时安抚公众情绪，纠正不实信息和偏激观点，引导社会舆论朝着理性、客观和正面的方向发展，进而维护整个社会舆论环境的和谐与稳定，保障公众能够在一个健康的信息环境中获取知识和做出判断。这种基于媒体类型与人格特质关系的研究成果，对于深入理解媒体在社会舆论形成和传播过程中的角色与功能具有重要意义，同时也为优化媒体环境、规范媒体行为和制定科学的信息传播策略提供了极具价值的参考依据。</p>
+            </div>
+        </section>
+
+        <!-- 在媒体分析部分后添加整体小结部分 -->
+        <section id="summary" class="section">
+            <h2>研究结论</h2>
+            
+            <!-- 第一张流程图及说明 -->
+            <div class="summary-item">
+                <div class="chart-container">
+                    <img src="影响网络舆论情绪变化的因素分析.jpg" alt="影响网络舆论情绪变化的因素分析" class="summary-image">
+                </div>
+                <div class="analysis-text">
+                    <p>主流媒体（主要是官方媒体）凭借其在人格特质上所展现出的尽责性和开放性，在社会舆论和公众情绪方面起到了至关重要稳定作用。在信息传播的生态系统中，官方媒体如同定海神针，能够有效地引导社会情绪和舆论的走向。当商业媒体和自媒体因神经质特质引发社会情绪波动和舆论混乱时，官方媒体能够通过自身的专业报道和客观分析，及时安抚公众情绪，纠正不实信息和偏激观点，引导社会舆论朝着理性、客观和正面的方向发展，进而维护整个社会舆论环境的和谐与稳定，保障公众能够在一个健康的信息环境中获取知识和做出判断。这种基于媒体类型与人格特质关系的研究成果，对于深入理解媒体在社会舆论形成和传播过程中的角色与功能具有重要意义，同时也为优化媒体环境、规范媒体行为和制定科学的信息传播策略提供了极具价值的参考依据。</p>
+                </div>
+            </div>
+
+            <!-- 第二张流程图及说明 -->
+            <div class="summary-item">
+                <div class="chart-container">
+                    <img src="舆情管理与人格特质.png" alt="舆情管理与人格特质" class="summary-image">
+                </div>
+                <div class="analysis-text">
+                    <p>五大人格特质于民众言论中协同变化、紧密跟随疫情"酝酿-爆发-缓和-终结"生命周期，背后是深层"刺激-认知-应激-调适"心理传导机制。在疫情各阶段依不同人格特质表现做好信息预警、发布及安抚。在开放性逐步上升的阶段，应敏锐捕捉小众专业群体的信号，提前部署针对性科普宣传，做好信息储备；在爆发期，当开放性达到"过载"状态并伴随神经质达到"峰值"时，需要警惕信息过载和情绪失控的风险。此时，应注重平衡信息发布的数量与质量，精准筛选权威且实用的资讯，避免信息恐慌引发"次生灾害"，并通过有效的情绪疏导缓解公众的心理压力。</p>
+                </div>
+            </div>
+
+            <!-- 第三张流程图及说明 -->
+            <div class="summary-item">
+                <div class="chart-container">
+                    <img src="治理策略.png" alt="治理策略" class="summary-image">
+                </div>
+                <div class="analysis-text">
+                    <p>在重大公共卫生突发事件中，需整合官方、网络平台、意见领袖等多方力量，形成全方位、多层次的有效沟通体系。依据不同时期网络平台特点与舆情态势，灵活运用数据驱动的精准沟通、透明信任的信息公开、环境优化的平台建设以及意见领袖的积极引导等策略，从而实现舆情的平稳引导，增强民众应对突发事件的信心与能力，维护社会稳定与公共卫生安全。</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>研究方法</h4>
+                <ul>
+                    <li><a href="#personality-intro">大五人格分析</a></li>
+                    <li><a href="#weekly-trends">趋势分析</a></li>
+                    <li><a href="#media-analysis">媒体分析</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>疫情分析</h4>
+                <ul>
+                    <li><a href="#sars-trends">SARS分析</a></li>
+                    <li><a href="#h7n9-trends">H7N9分析</a></li>
+                    <li><a href="#covid-trends">COVID-19分析</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>数据来源</h4>
+                <ul>
+                    <li><a href="#">天涯论坛</a></li>
+                    <li><a href="#">百度贴吧</a></li>
+                    <li><a href="#">新浪微博</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>关于我们</h4>
+                <ul>
+                    <li><a href="#">研究团队</a></li>
+                    <li><a href="#">联系方式</a></li>
+                    <li><a href="#">项目简介</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2023 络舆情博弈分析平台 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 调整iframe高度
+        function adjustIframeHeights() {
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach(iframe => {
+                iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+            });
+        }
+
+        // 页面加载完成后调整iframe高度
+        window.addEventListener('load', adjustIframeHeights);
+        // 窗口大小改变时重新调整
+        window.addEventListener('resize', adjustIframeHeights);
+
+        // 标签页切换函数
+        function switchTab(button, contentId) {
+            // 获取当前标签容器
+            const container = button.closest('.tab-container');
+            
+            // 移除所有按钮的active类
+            container.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 移除所有内容的active类
+            container.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 添加active类到当前按钮和内容
+            button.classList.add('active');
+            document.getElementById(contentId).classList.add('active');
+
+            // 触发window resize事件以确保图表正确渲染
+            window.dispatchEvent(new Event('resize'));
+        }
+    </script>
+</body>
+</html> 

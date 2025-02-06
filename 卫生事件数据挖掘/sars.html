@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SARS相关分析 - 网络群众态度变化研究</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .section {
+            margin-bottom: 40px;
+        }
+        .chart-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .chart-frame {
+            width: 100%;
+            border: none;
+        }
+        #trends-frame {
+            height: 500px;
+        }
+        #mindmap-frame {
+            height: 1000px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="nav-content">
+            <h2>目录</h2>
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="#trends-section">SARS大五人格数量趋势图</a></li>
+                <li><a href="#mindmap-section">SARS网络舆论大五人格关键词思维导图</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <header>
+            <h1>SARS相关分析</h1>
+        </header>
+
+        <!-- 趋势图部分 -->
+        <section id="trends-section" class="content-section">
+            <h2>SARS大五人格数量趋势图</h2>
+            <div class="chart-container">
+                <iframe id="trends-frame" class="chart-frame" src="SARS大五人格趋势图.html"></iframe>
+            </div>
+        </section>
+
+        <!-- 思维导图部分 -->
+        <section id="mindmap-section" class="content-section">
+            <h2>SARS网络舆论大五人格关键词思维导图</h2>
+            <div class="chart-container">
+                <iframe id="mindmap-frame" class="chart-frame" src="SARS网络舆论大五人格关键词思维导图.html"></iframe>
+            </div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html> 
