@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            margin: 0;
+            background-color: #f5f6fa;  /* 与主页面背景色保持一致 */
+        }
+        #container {
+            height: 800px;  /* 固定图表高度 */
+            width: 100%;
+        }
+        .analysis-text {
+            margin: 40px auto;
+            padding: 20px 40px;
+            max-width: 1200px;
+            line-height: 1.5;
+            color: #2c3e50;
+            background-color: #f5f6fa;
+        }
+        .analysis-text p {
+            margin-bottom: 10px;
+            text-indent: 2em;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <!-- 图表容器 -->
+    <div id="container"></div>
+
+    <!-- 说明文字容器 -->
+    <div class="analysis-text">
+        <p>2003 年 1 月 27 日~2004 年 1 月 26 日，天涯论坛"天涯医院"版块大五人格发帖数量占比树图。</p>
+        <p>在501条文本数据中，按比例取样本量100条并加以总结，天涯网站版块中可追溯第一条SARS相关讨论帖发起时间为2003年1月27日为起始时间。</p>
+        <p>绘制方法：根节点作为重大事件的名称；第二层节点为大五人格分布，这一层可以看到大五人格每个人格的占比；第三层则为列举的100条内容，可以大致了解不同人格的发言内容。</p>
+    </div>
+
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+    <script type="text/javascript">
+        // 初始化 ECharts 实例
+        var myChart = echarts.init(document.getElementById('container'));
+
+        // 生成每个大节点的子节点，并设置子节点颜色的函数
+        function generateChildren(names, nodeColor) {
+            var children = [];
+            names.forEach(name => {
+                children.push({
+                    name: name,
+                    itemStyle: {
+                        color: nodeColor // 设置小节点的颜色与大节点一致
+                    }
+                });
+            });
+            return children;
+        }
+
+        // 自定义树状图数据结构（替换为SARS相关数据）
+        var data = {
+            name: 'SARS', // 根节点
+            children: [
+                {
+                    name: '尽责性', // 第一个大节点
+                    itemStyle: {
+                        color: '#D8B7DD' // 淡紫色
+                    },
+                    children: generateChildren([
+                        "一般情况下肺痛是不是就一定是肺炎？",
+                        "及时更新，非典肺炎， 人命关天！！！",
+                        "伟大的白衣天使",
+                        "请问海南现在有非典病例吗？",
+                        "海南有没有非典",
+                        "辽宁现在有没有SARS？？",
+                        "妈妈给我的预防药 是不是都能吃？",
+                        "“非典”在那里检查？？？",
+                        "从江苏到河南，坐火车，怎么预防非典? 什么样的消毒液有用？",
+                        "哪里有隔离服出售！！！！！！！",
+                        "看看我的防非典措施。"
+                    ], '#D8B7DD')
+                },
+                {
+                    name: '开放性', // 第二个大节点
+                    itemStyle: {
+                        color: '#FFF5B7' // 淡黄色
+                    },
+                    children: generateChildren([
+                        "非典型肺会出现什么样的症状",
+                        "大家看看什么是“非典型性肺炎“",
+                        "非典型肺炎个案仍在迅增(转载)",
+                        "非典型肺炎是怎样的症状？",
+                        "北京也又不典型肺炎了？！",
+                        "注意：这可不是什么肺炎！",
+                        "请问那个肺炎有什么症状如何预防？",
+                        "求助！！非典型性肺炎该怎样治疗？",
+                        "肺炎会有什么症状呀？",
+                        "在KTV唱卡拉OK，如何预防非典型性肺炎？",
+                        "奇方治非典(转载)",
+                        "科学地预防非典型肺炎(转载)",
+                        "预防非典型肺炎,这种药有用吗?",
+                        "在游泳池内怎样预防非典型肺炎",
+                        "非典型肺炎到底是什么鬼东西？！",
+                        "非典症状",
+                        "世卫总干事公开批评中国(转载)",
+                        "关于sars,到底那个说法对啊？",
+                        "非典怎么预防",
+                        "请教，有关非典",
+                        "关于非典复病例，请大家谈谈看法",
+                        "吸烟与非典的相关性",
+                        "非典活性碳口罩有用吗？",
+                        "发现非典起源",
+                        "预言非典的口罩选择",
+                        "请教怎么样预防“非典”？",
+                        "SARS/免疫力",
+                        "非典治愈者是怎么治好的呢？",
+                        "这是急性气管炎，还是。。。",
+                        "非典在潜伏期内有什么具体症么？",
+                        "非典会不会通过血液传播？",
+                        "非典型肺炎在潜伏期的症状？（再线等）",
+                        "关于臭氧机！",
+                        "我这是喝中药过敏吗？",
+                        "沁园春 关天看非典相关贴有感",
+                        "关于沸点的个人建议",
+                        "关于板蓝根",
+                        "非典可以预防吗?",
+                        "政府应该怎样处理SARS问题",
+                        "谁能告诉我一下非典潜伏期的情况？",
+                        "有吃了中药反而觉得胸口闷的吗",
+                        "[眼耳鼻喉科]为什么觉得胸闷、气喘？",
+                        "头常常不舒服是因为什么？",
+                        "寻医问药]再问一个",
+                        "我的体温是否属正常？",
+                        "我每天定时发烧 是非碘吗",
+                        "注射球形蛋白有用吗？",
+                        "好多人都在打防非典针 管用吗？",
+                        "体温过低算什么“典”？",
+                        "非点进入夏天时能不能自动消灭",
+                        "请教各位有经验的人士",
+                        "防非典中药应该怎样喝？",
+                        "两个我一直都很好奇的医学问题"
+                    ], '#FFF5B7')
+                },
+                {
+                    name: '亲和性', // 第三个大节点
+                    itemStyle: {
+                        color: '#D4F1C7' // 浅绿色
+                    },
+                    children: generateChildren([
+                        "同胞有难，匹夫有责",
+                        "请为抗非典战士配盔甲",
+                        "悼念失去的英雄"
+                    ], '#D4F1C7')
+                },
+                {
+                    name: '神经质', // 第四个大节点
+                    itemStyle: {
+                        color: '#A7C7F6' // 浅蓝色
+                    },
+                    children: generateChildren([
+                        "吓死了，以为得了非典型肺炎",
+                        "非典型肺炎可怕？",
+                        "至少传染你---非典带菌者决心书",
+                        "我咳血了,是非典吗????????????",
+                        "是否非典型？请各位帮忙！",
+                        "也担心……",
+                        "紧急求助！！！！！！！！！！！",
+                        "非典到底什么时才能结束呀？？？",
+                        "[眼耳鼻喉科]得了非典，怎么办？？",
+                        "在线等答关于！非典！",
+                        "有医生在吗？问个呼吸不顺畅的问题（在线等）",
+                        "喝消毒水可不可发治愈非典呢？本人的遐想？哈",
+                        "急！！！体温3天都是37度3是不是正常啊？",
+                        "帮忙看看我是不是得了非典",
+                        "怕怕！",
+                        "！！！！我得了非典吗？",
+                        "请懂医的友帮忙看看，急急急！！！！·",
+                        "紧急求助：非典时期的怀孕问题",
+                        "我需要去检查吗？（非典）",
+                        "是非典医院还是集中营？"
+                    ], '#A7C7F6')
+                },
+                {
+                    name: '外向性', // 第五个大节点
+                    itemStyle: {
+                        color: '#F2A8A1' // 淡红色
+                    },
+                    children: generateChildren([
+                        "有开药店的朋友吗？？？？？？？？？",
+                        "我想我们该为同行呼喊！请大家支持我。",
+                        "谁在第一线？",
+                        "SARS带来的好处！"
+                    ], '#F2A8A1')
+                }
+            ]
+        };
+
+        // 隐藏加载动画
+        myChart.hideLoading();
+
+        // 设置图表的配置项
+        myChart.setOption({
+            tooltip: {
+                trigger: 'item',
+                triggerOn: 'mousemove'
+            },
+            series: [
+                {
+                    type: 'tree',
+                    data: [data],
+                    top: '25%',
+                    bottom: '20%',
+                    layout: 'radial',
+                    symbol: 'emptyCircle',
+                    symbolSize: 7,
+                    initialTreeDepth: 3,
+                    animationDurationUpdate: 750,
+                    emphasis: {
+                        focus: 'descendant'
+                    },
+                    itemStyle: {
+                        borderColor: '#000',
+                        borderWidth: 1
+                    }
+                }
+            ]
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big Five personality trends during H1N1</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+  <style>
+    .chart-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #main {
+      width: 100%;
+      height: 500px;
+    }
+    #pieChart {
+      width: 600px;
+      height: 400px;
+      margin-top: 20px;
+      display: none;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="chart-container">
+    <div id="main"></div>
+    <div id="pieChart"></div>
+  </div>
+
+  <script>
+    var rawData = [
+      ['Month', 'Conscientiousness', 'Openness', 'Neuroticism', 'Extraversion', 'Agreeableness'],
+      ['2009-04', 144, 489, 186, 18, 40],
+      ['2009-05', 39, 292, 82, 3, 21],
+      ['2009-06', 4, 93, 23, 0, 3],
+      ['2009-07', 0, 32, 23, 0, 4],
+      ['2009-08', 0, 34, 14, 0, 0],
+      ['2009-09', 9, 223, 115, 0, 12],
+      ['2009-10', 1, 193, 70, 0, 1],
+      ['2009-11', 32, 68, 187, 27, 0],
+      ['2009-12', 9, 3, 42, 7, 0],
+      ['2010-01', 1, 0, 5, 0, 0],
+      ['2010-02', 0, 0, 4, 1, 0]
+    ];
+
+    var chartDom = document.getElementById('main');
+    var pieChartDom = document.getElementById('pieChart');
+    var myChart = echarts.init(chartDom);
+    var pieChart = echarts.init(pieChartDom);
+
+    // 定义统一的颜色方案
+    const personalityColors = {
+      'Openness': '#1E90FF',      // 蓝色
+      'Conscientiousness': '#32CD32', // 绿色
+      'Extraversion': '#FFD700',   // 黄色
+      'Agreeableness': '#FFB6C1',  // 粉色
+      'Neuroticism': '#9370DB'     // 紫色
+    };
+
+    // 创建饼图的函数
+    function createPieChart(monthData) {
+      const [month, ...values] = monthData;
+      const traits = ['Conscientiousness', 'Openness', 'Neuroticism', 'Extraversion', 'Agreeableness'];
+      
+      const total = values.reduce((a, b) => a + b, 0);
+      if (total === 0) return;
+      
+      const pieData = traits.map((trait, index) => ({
+        name: trait,
+        value: values[index],
+        itemStyle: {
+          color: personalityColors[trait]
+        }
+      })).filter(item => item.value > 0);
+
+      const pieOption = {
+        title: {
+          text: `Personality Distribution - ${month}`,
+          left: 'center',
+          top: 20
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: function(params) {
+            const percentage = ((params.value / total) * 100).toFixed(1);
+            return `${params.name}<br/>Value: ${params.value}<br/>Percentage: ${percentage}%`;
+          }
+        },
+        legend: {
+          orient: 'horizontal',
+          bottom: 20,
+          itemWidth: 25,
+          itemHeight: 14
+        },
+        series: [
+          {
+            name: 'Personality Distribution',
+            type: 'pie',
+            radius: ['30%', '60%'],
+            center: ['50%', '50%'],
+            data: pieData,
+            label: {
+              show: true,
+              formatter: function(params) {
+                return `${params.name}\n(${params.value})\n${params.percent}%`;
+              },
+              position: 'outside',
+              fontSize: 12,
+              lineHeight: 15
+            },
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
+
+      pieChartDom.style.display = 'block';
+      pieChart.clear();
+      pieChart.setOption(pieOption);
+    }
+
+    // 折线图配置
+    var option = {
+      title: {
+        text: 'Big Five personality trends during H1N1',
+        left: 'center',
+      },
+      tooltip: {
+        trigger: 'axis',
+      },
+      legend: {
+        data: ['Conscientiousness', 'Openness', 'Neuroticism', 'Extraversion', 'Agreeableness'],
+        top: '10%'
+      },
+      xAxis: {
+        type: 'category',
+        data: rawData.slice(1).map(item => item[0]),
+        axisLabel: {
+          rotate: 45
+        }
+      },
+      yAxis: {
+        type: 'value',
+        min: 0,
+        max: 500,
+        name: 'Number',
+        axisLabel: {
+          formatter: '{value}'
+        },
+        interval: 30
+      },
+      series: [
+        {
+          name: 'Conscientiousness',
+          type: 'line',
+          data: rawData.slice(1).map(item => item[1]),
+          smooth: true,
+          lineStyle: { width: 2, color: personalityColors['Conscientiousness'] },
+          itemStyle: { color: personalityColors['Conscientiousness'] },
+          symbol: 'circle',
+          symbolSize: 8
+        },
+        {
+          name: 'Openness',
+          type: 'line',
+          data: rawData.slice(1).map(item => item[2]),
+          smooth: true,
+          lineStyle: { width: 2, color: personalityColors['Openness'] },
+          itemStyle: { color: personalityColors['Openness'] },
+          symbol: 'circle',
+          symbolSize: 8
+        },
+        {
+          name: 'Neuroticism',
+          type: 'line',
+          data: rawData.slice(1).map(item => item[3]),
+          smooth: true,
+          lineStyle: { width: 2, color: personalityColors['Neuroticism'] },
+          itemStyle: { color: personalityColors['Neuroticism'] },
+          symbol: 'circle',
+          symbolSize: 8
+        },
+        {
+          name: 'Extraversion',
+          type: 'line',
+          data: rawData.slice(1).map(item => item[4]),
+          smooth: true,
+          lineStyle: { width: 2, color: personalityColors['Extraversion'] },
+          itemStyle: { color: personalityColors['Extraversion'] },
+          symbol: 'circle',
+          symbolSize: 8
+        },
+        {
+          name: 'Agreeableness',
+          type: 'line',
+          data: rawData.slice(1).map(item => item[5]),
+          smooth: true,
+          lineStyle: { width: 2, color: personalityColors['Agreeableness'] },
+          itemStyle: { color: personalityColors['Agreeableness'] },
+          symbol: 'circle',
+          symbolSize: 8
+        }
+      ]
+    };
+
+    // 添加点击事件
+    myChart.on('click', function(params) {
+      if (params.componentType === 'series') {
+        const monthIndex = rawData.findIndex(item => item[0] === params.name);
+        if (monthIndex > 0) {
+          createPieChart(rawData[monthIndex]);
+        }
+      }
+    });
+
+    // 当窗口调整大小时重新渲染图表
+    window.addEventListener('resize', function() {
+      myChart.resize();
+      if (pieChartDom.style.display === 'block') {
+        pieChart.resize();
+      }
+    });
+
+    // 渲染折线图
+    myChart.setOption(option);
+  </script>
+</body>
+</html>
+

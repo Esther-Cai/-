@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big Five personality trends during SARS</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+  <style>
+    body {
+      background-color: #f5f6fa;
+      margin: 0;
+      padding: 0;
+    }
+    .chart-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin: 20px;
+    }
+    #main {
+      width: 100%;
+      height: 500px;
+    }
+    #pieChart {
+      width: 600px;
+      height: 400px;
+      margin-top: 20px;
+      display: none;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .analysis-text {
+      margin: 40px auto;
+      padding: 20px 40px;
+      max-width: 1200px;
+      line-height: 1.5;
+      color: #2c3e50;
+    }
+    .analysis-text p {
+      margin-bottom: 10px;
+      text-indent: 2em;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <div class="chart-container">
+    <div id="main"></div>
+    <div id="pieChart"></div>
+  </div>
+  
+  <div class="analysis-text">
+    <p>SARS疫情期间，民众言论情绪与五大人格特质变化显著。2003年初，尽责性率先出现，少数人开始关注个人防护。</p>
+    <p>随着疫情扩散（2月-3月），外向性和神经质增加，反映了公众对感染的担忧。4月疫情高峰期，神经质达到顶峰，显示出广泛恐慌。</p>
+    <p>随后，防控措施见效，5月起尽责性和开放性下降，信息传播趋于理性，同时宜人性上升，更多关注医护人员的故事。</p>
+    <p>从6月至11月，神经质水平降低，生活恢复正常，关于SARS的讨论大幅减少，表明了从警觉、恐慌到平静的心理转变过程。</p>
+  </div>
+
+  <script>
+    var rawData = [
+      ['Month', 'Conscientiousness', 'Openness', 'Neuroticism', 'Extraversion', 'Agreeableness'],
+      ['2003-01', 1, 0, 0, 0, 0],
+      ['2003-02', 2, 9, 2, 0, 0],
+      ['2003-03', 3, 10, 3, 1, 0],
+      ['2003-04', 68, 143, 56, 15, 2],
+      ['2003-05', 0, 82, 29, 2, 10],
+      ['2003-06', 0, 10, 3, 0, 0],
+      ['2003-07', 0, 0, 1, 0, 1],
+      ['2003-08', 0, 1, 1, 0, 0],
+      ['2003-09', 0, 2, 1, 0, 0],
+      ['2003-10', 0, 3, 0, 0, 0]
+    ];
+
+    var chartDom = document.getElementById('main');
+    var pieChartDom = document.getElementById('pieChart');
+    var myChart = echarts.init(chartDom);
+    var pieChart = echarts.init(pieChartDom);
+
+    // 定义统一的颜色方案
+    const personalityColors = {
+      'Openness': '#1E90FF',      // 蓝色
+      'Conscientiousness': '#32CD32', // 绿色
+      'Extraversion': '#FFD700',   // 黄色
+      'Agreeableness': '#FFB6C1',  // 粉色
+      'Neuroticism': '#9370DB'     // 紫色
+    };
+
+    // 创建饼图的函数
+    function createPieChart(monthData) {
+      const [month, ...values] = monthData;
+      const traits = ['Conscientiousness', 'Openness', 'Neuroticism', 'Extraversion', 'Agreeableness'];
+      
+      const total = values.reduce((a, b) => a + b, 0);
+      if (total === 0) return;
+      
+      const pieData = traits.map((trait, index) => ({
+        name: trait,
+        value: values[index],
+        itemStyle: {
+          color: personalityColors[trait]
+        }
+      })).filter(item => item.value > 0);
+
+      const pieOption = {
+        title: {
+          text: `Personality Distribution - ${month}`,
+          left: 'center',
+          top: 20
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: function(params) {
+            const percentage = ((params.value / total) * 100).toFixed(1);
+            return `${params.name}<br/>Value: ${params.value}<br/>Percentage: ${percentage}%`;
+          }
+        },
+        legend: {
+          orient: 'horizontal',
+          bottom: 20,
+          itemWidth: 25,
+          itemHeight: 14
+        },
+        series: [
+          {
+            name: 'Personality Distribution',
+            type: 'pie',
+            radius: ['30%', '60%'],
+            center: ['50%', '50%'],
+            data: pieData,
+            label: {
+              show: true,
+              formatter: function(params) {
+                return `${params.name}\n(${params.value})\n${params.percent}%`;
+              },
+              position: 'outside',
+              fontSize: 12,
+              lineHeight: 15
+            },
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
+
+      pieChartDom.style.display = 'block';
+      pieChart.clear();
+      pieChart.setOption(pieOption);
+    }
+
+    // 折线图配置
+    var option = {
+      title: {
+        text: 'Big Five personality trends during SARS',
+        left: 'center',
+      },
+      tooltip: {
+        trigger: 'axis',
+      },
+      legend: {
+        data: ['Conscientiousness', 'Openness', 'Neuroticism', 'Extraversion', 'Agreeableness'],
+        top: '10%'
+      },
+      xAxis: {
+        type: 'category',
+        data: rawData.slice(1).map(item => item[0]),
+        axisLabel: {
+          rotate: 45
+        }
+      },
+      yAxis: {
+        type: 'value',
+        min: 0,
+        max: 150,
+        name: 'Number',
+        axisLabel: {
+          formatter: '{value}'
+        },
+        interval: 20
+      },
+      series: [
+        {
+          name: 'Conscientiousness',
+          type: 'line',
+          data: rawData.slice(1).map(item => item[1]),
+          smooth: true,
+          lineStyle: { width: 2, color: personalityColors['Conscientiousness'] },
+          itemStyle: { color: personalityColors['Conscientiousness'] },
+          symbol: 'circle',
+          symbolSize: 8
+        },
+        {
+          name: 'Openness',
+          type: 'line',
+          data: rawData.slice(1).map(item => item[2]),
+          smooth: true,
+          lineStyle: { width: 2, color: personalityColors['Openness'] },
+          itemStyle: { color: personalityColors['Openness'] },
+          symbol: 'circle',
+          symbolSize: 8
+        },
+        {
+          name: 'Neuroticism',
+          type: 'line',
+          data: rawData.slice(1).map(item => item[3]),
+          smooth: true,
+          lineStyle: { width: 2, color: personalityColors['Neuroticism'] },
+          itemStyle: { color: personalityColors['Neuroticism'] },
+          symbol: 'circle',
+          symbolSize: 8
+        },
+        {
+          name: 'Extraversion',
+          type: 'line',
+          data: rawData.slice(1).map(item => item[4]),
+          smooth: true,
+          lineStyle: { width: 2, color: personalityColors['Extraversion'] },
+          itemStyle: { color: personalityColors['Extraversion'] },
+          symbol: 'circle',
+          symbolSize: 8
+        },
+        {
+          name: 'Agreeableness',
+          type: 'line',
+          data: rawData.slice(1).map(item => item[5]),
+          smooth: true,
+          lineStyle: { width: 2, color: personalityColors['Agreeableness'] },
+          itemStyle: { color: personalityColors['Agreeableness'] },
+          symbol: 'circle',
+          symbolSize: 8
+        }
+      ]
+    };
+
+    // 添加点击事件
+    myChart.on('click', function(params) {
+      if (params.componentType === 'series') {
+        const monthIndex = rawData.findIndex(item => item[0] === params.name);
+        if (monthIndex > 0) {
+          createPieChart(rawData[monthIndex]);
+        }
+      }
+    });
+
+    // 当窗口调整大小时重新渲染图表
+    window.addEventListener('resize', function() {
+      myChart.resize();
+      if (pieChartDom.style.display === 'block') {
+        pieChart.resize();
+      }
+    });
+
+    // 渲染折线图
+    myChart.setOption(option);
+  </script>
+</body>
+</html>

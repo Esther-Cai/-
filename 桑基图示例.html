@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>媒体-大五人格分布桑基图</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+    <style>
+        #main {
+            width: 100%;
+            height: 900px;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+    <script>
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+
+        // 定义颜色方案
+        const mediaTypeColors = {
+            '官方媒体': '#4E342E',  // 深棕色
+            '商业媒体': '#40699D',  // 蓝色
+            '自媒体': '#5ba33b',    // 绿色
+            '国际机构': '#C32D2E',  // 红色
+            '民间媒体': '#9F413E'   // 紫红色
+        };
+
+        const option = {
+            backgroundColor: '#fff',
+            title: {
+                text: '媒体类型-媒体来源-大五人格特质分布',
+                left: 'center',
+                top: 20,
+                textStyle: {
+                    fontSize: 20
+                }
+            },
+            tooltip: {
+                trigger: 'item',
+                triggerOn: 'mousemove'
+            },
+            series: [{
+                type: 'sankey',
+                left: 50.0,
+                top: 20.0,
+                right: 150.0,
+                bottom: 25.0,
+                nodeWidth: 20,
+                nodeGap: 8,
+                emphasis: {
+                    focus: 'adjacency'
+                },
+                layoutIterations: 0,
+                data: [],
+                links: [],
+                lineStyle: {
+                    color: 'source',
+                    curveness: 0.5,
+                    opacity: 0.2,
+                    width: 1
+                },
+                label: {
+                    color: 'rgba(0,0,0,0.7)',
+                    fontFamily: 'Arial',
+                    fontSize: 12,
+                    position: 'right'
+                },
+                itemStyle: {
+                    borderWidth: 1,
+                    borderColor: '#aaa'
+                }
+            }]
+        };
+
+        // 处理CSV数据
+        const csvData = `#不明原因肺炎患者转入传染病医院#,责任心,中国新闻网,官方媒体
+#武汉卫健委通报不明原因肺炎#,开放型,上帝之鹰_5zn,自媒体
+#武汉不明原因肺炎不能断定是 sars#,尽责性,凯雷,商业媒体
+#武汉不明原因肺炎已排除 sars 病原#,责任心,央视新闻,官方媒体
+#武汉不明原因肺炎病原体为新型冠状病毒#,责任心,央视新闻,官方媒体
+#阿根廷出现不明原因肺炎已致 2 人死亡#,宜人性,央视新闻,官方媒体
+#泰国新型冠状病毒病例为武汉游客#,外向性,央视新闻,官方媒体
+#武汉冠状病毒肺炎新增死亡 1 例#,责任心,中国新闻网,官方媒体
+#泰国发现第二例新型冠状病毒肺炎患者#,外向性,凤凰网,商业媒体
+#武汉病毒性肺炎 5 大谣言#,责任心,人民日报,官方媒体
+#专家称武汉冠状病毒肺炎总体可治#,开放性,新京报,官方媒体
+#世卫组织关于新型冠状病毒的建议#,开放性,世界卫生组织,国际机构
+#韩国现不明原因肺炎病例#,开放性,央视网快看,官方媒体
+#广东确诊 1 例新型冠状病毒感染肺炎病例#,责任心,央视新闻,官方媒体
+#卫健委提醒病毒性肺炎防控事项#,责任心,人民日报,官方媒体
+#新型冠状病毒感染的肺炎症状#,责任心,人民日报,官方媒体
+#深圳另有 8 例新型冠状病毒肺炎观察病例#,责任心,21 世纪经济报道,商业媒体
+#武汉卫健委发布病毒性肺炎高发注意事项#,责任心,央视新闻,官方媒体
+#北京强化新型冠状病毒肺炎病例排查#,责任心,央视新闻,官方媒体
+#预防新型冠状病毒#,责任心,新华社,官方媒体
+#一分钟科普冠状病毒#,开放性,梨视频,商业媒体
+#外交部回应新型冠状病毒感染肺炎疫情#,责任心,中国日报,官方媒体
+#境内确诊 217 例新型冠状病毒肺炎病例#,责任心,央视新闻,官方媒体
+#上海确诊首例新型冠状病毒感染肺炎#,责任心,央视新闻,官方媒体
+#新型冠状病毒感染肺炎疫情梳理#,开放性,浦东发布,官方媒体
+#新型冠状病毒传染性比 sars 弱#,开放性,央视新闻,官方媒体
+#钟南山肯定新型冠状病毒肺炎人传人#,责任心,人民日报,官方媒体
+#钟南山解读新型冠状病毒肺炎疫情#,责任心,人民日报,官方媒体
+#有医务人员被传染新型冠状病毒肺炎#,责任心,蓝鲸财经记者工作平台,商业媒体`;
+
+        // 数据处理函数
+        function processData(csvData) {
+            const rows = csvData.split('\n')
+                .filter(row => row.trim())
+                .map(row => row.split(','));
+
+            // 收集唯一的媒体名称和统计数据
+            const mediaStats = new Map();
+            const mediaTypes = new Set();
+            const personalities = new Set();
+
+            rows.forEach(row => {
+                const [_, personality, mediaName, mediaType] = row.map(item => item.trim());
+                mediaTypes.add(mediaType);
+                personalities.add(personality);
+
+                if (!mediaStats.has(mediaName)) {
+                    mediaStats.set(mediaName, {
+                        type: mediaType,
+                        personalities: new Map()
+                    });
+                }
+
+                const stats = mediaStats.get(mediaName);
+                if (!stats.personalities.has(personality)) {
+                    stats.personalities.set(personality, 0);
+                }
+                stats.personalities.set(personality, stats.personalities.get(personality) + 1);
+            });
+
+            // 构建节点数据
+            const nodes = [
+                // 媒体类型节点
+                ...Array.from(mediaTypes).map(type => ({
+                    name: type,
+                    itemStyle: {
+                        color: mediaTypeColors[type],
+                        borderColor: mediaTypeColors[type]
+                    }
+                })),
+                // 媒体名称节点
+                ...Array.from(mediaStats.keys()).map(name => ({
+                    name: name,
+                    itemStyle: {
+                        color: '#aaa',
+                        borderColor: '#aaa'
+                    }
+                })),
+                // 大五人格节点
+                ...Array.from(personalities).map(trait => ({
+                    name: trait,
+                    itemStyle: {
+                        color: '#666',
+                        borderColor: '#666'
+                    }
+                }))
+            ];
+
+            // 构建链接数据
+            const links = [];
+
+            // 添加媒体类型到媒体名称的链接
+            mediaStats.forEach((stats, mediaName) => {
+                links.push({
+                    source: stats.type,
+                    target: mediaName,
+                    value: Array.from(stats.personalities.values()).reduce((a, b) => a + b, 0)
+                });
+            });
+
+            // 添加媒体名称到大五人格特质的链接
+            mediaStats.forEach((stats, mediaName) => {
+                stats.personalities.forEach((count, personality) => {
+                    links.push({
+                        source: mediaName,
+                        target: personality,
+                        value: count
+                    });
+                });
+            });
+
+            return {
+                nodes: nodes,
+                links: links
+            };
+        }
+
+        // 处理数据并更新图表
+        const data = processData(csvData);
+        option.series[0].data = data.nodes;
+        option.series[0].links = data.links;
+
+        // 渲染图表
+        myChart.setOption(option);
+
+        // 响应式调整
+        window.addEventListener('resize', () => {
+            myChart.resize();
+        });
+    </script>
+</body>
+</html>
